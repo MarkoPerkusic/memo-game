@@ -10,7 +10,6 @@ class Game
 	public:
 		Game();
 		~Game();
-		//void set_players(SDL_Window* w, SDL_Renderer* r);
 		void set_players();
 		void setup(const char* title, int x_pos, int y_pos, int w, int h, bool fullscreen);
 		void eventHandler();

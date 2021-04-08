@@ -2,8 +2,8 @@
 #include <iostream>
 #include <string>
 
-Game::Game() {};
-Game::~Game() {};
+Game::Game() {}
+Game::~Game() {}
 
 void Game::setup(const char* title, int x_pos, int y_pos, int w, int h, bool fullscreen) 
 {

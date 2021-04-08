@@ -9,8 +9,9 @@ const int W_HEIGHT = 200;
 Input::Input() 
 {
 	input = "";
-};
-Input::~Input() {};
+}
+
+Input::~Input() {}
 
 void Input::input_window(const char* text)
 {
@@ -35,7 +36,7 @@ void Input::input_window(const char* text)
 	SDL_Delay(2000);
 	TTF_CloseFont(font);
 	SDL_DestroyWindow(w);
-};
+}
 
 void Input::apply_text(TTF_Font* font, SDL_Color font_col, SDL_Rect rect, SDL_Renderer* rend, const char* text)
 {
@@ -44,7 +45,7 @@ void Input::apply_text(TTF_Font* font, SDL_Color font_col, SDL_Rect rect, SDL_Re
 	SDL_QueryTexture(message, NULL, NULL, &rect.w, &rect.h);
 	SDL_RenderCopy(rend, message, NULL, &rect);
 	SDL_RenderPresent(rend);
-};
+}
 
 void Input::handle_input()
 {
@@ -81,9 +82,9 @@ void Input::handle_input()
 			}
 		}
 	SDL_StopTextInput();
-};
+}
 
 int Input::show_input() 
 {
 	return std::stoi(input);
-};
+}
