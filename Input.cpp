@@ -26,40 +26,25 @@ void Input::input_window(const char* text)
 	TTF_Font* font = TTF_OpenFont("arial.ttf", FONT_SIZE);
 	SDL_Color font_col { 0, 255, 0 };
 	
-	SDL_Surface* surface = TTF_RenderText_Solid(font, text, font_col);
-	SDL_Texture* message = SDL_CreateTextureFromSurface(r, surface);
-	SDL_Rect rect {50, 50, 100, 100};
-	SDL_QueryTexture(message, NULL, NULL, &rect.w, &rect.h);
-	SDL_RenderCopy(r, message, NULL, &rect);
-	SDL_RenderPresent(r);
-
-	/*Input::apply_text(font, font_col, {50, 50, 100, 100}, r, text);*/
+	Input::apply_text(font, font_col, {50, 50, 100, 100}, r, text);
 
 	handle_input();
 
-	/*Input::apply_text(font, font_col, { 150, 100, 100, 100 }, r, input.c_str());*/
-	SDL_Rect rect2 { 150, 100, 100, 100 };
-	SDL_Surface* surface2 = TTF_RenderText_Solid(font, input.c_str(), font_col);
-	SDL_Texture* message2 = SDL_CreateTextureFromSurface(r, surface2);
-	SDL_BlitSurface(surface2, NULL, surface, &rect2);
-	SDL_QueryTexture(message2, NULL, NULL, &rect2.w, &rect2.h);
-	SDL_RenderCopy(r, message2, NULL, &rect2);
-	SDL_RenderPresent(r);
+	Input::apply_text(font, font_col, { 150, 100, 100, 100 }, r, input.c_str());
 
 	SDL_Delay(2000);
-
 	TTF_CloseFont(font);
 	SDL_DestroyWindow(w);
 };
 
-/*void Input::apply_text(TTF_Font* font, SDL_Color font_col, SDL_Rect rect, SDL_Renderer* rend, const char* text)
+void Input::apply_text(TTF_Font* font, SDL_Color font_col, SDL_Rect rect, SDL_Renderer* rend, const char* text)
 {
 	SDL_Surface* surface = TTF_RenderText_Solid(font, text, font_col);
 	SDL_Texture* message = SDL_CreateTextureFromSurface(rend, surface);
 	SDL_QueryTexture(message, NULL, NULL, &rect.w, &rect.h);
 	SDL_RenderCopy(rend, message, NULL, &rect);
 	SDL_RenderPresent(rend);
-};*/
+};
 
 void Input::handle_input()
 {

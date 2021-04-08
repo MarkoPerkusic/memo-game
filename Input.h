@@ -14,5 +14,5 @@ class Input
 		
 	private:
 		std::string input;
-		/*void apply_text(TTF_Font* font, SDL_Color font_col, SDL_Rect rect, SDL_Renderer* rend, const char* text);*/
+		void apply_text(TTF_Font* font, SDL_Color font_col, SDL_Rect rect, SDL_Renderer* rend, const char* text);
 };
