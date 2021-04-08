@@ -3,7 +3,7 @@
 #include <string>
 
 const int FONT_SIZE = 25;
-const int W_WIDTH = 400;
+const int W_WIDTH = 450;
 const int W_HEIGHT = 200;
 
 Input::Input() 
@@ -33,7 +33,7 @@ void Input::input_window(const char* text)
 
 	Input::apply_text(font, font_col, { 150, 100, 100, 100 }, r, input.c_str());
 
-	SDL_Delay(2000);
+	SDL_Delay(500);
 	TTF_CloseFont(font);
 	SDL_DestroyWindow(w);
 }

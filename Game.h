@@ -10,7 +10,9 @@ class Game
 	public:
 		Game();
 		~Game();
+		int get_input(const char* display_text);
 		void set_players();
+		void set_cards();
 		void setup(const char* title, int x_pos, int y_pos, int w, int h, bool fullscreen);
 		void eventHandler();
 		void update();
@@ -22,5 +24,6 @@ class Game
 		SDL_Window* window;
 		SDL_Renderer* rend;
 		int num_of_players;
+		int num_of_cards;
 
 };

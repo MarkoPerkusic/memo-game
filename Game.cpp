@@ -28,12 +28,27 @@ void Game::setup(const char* title, int x_pos, int y_pos, int w, int h, bool ful
 
 void Game::set_players() 
 {
-	Input players;
-	players.input_window("Enter number of players:");
-	std::cout << players.show_input() << std::endl;
-	num_of_players = players.show_input();
-	if (num_of_players == 0)
+	int players = get_input("Enter the number of players:");
+	if (players != 0)
+		num_of_players = players;
+	else
 		isRunning = false;
+}
+
+void Game::set_cards()
+{
+	int cards = get_input("Enter the (even) number of cards");
+	if (cards != 0 || cards % 2 == 0)
+		num_of_cards = cards;
+	else
+		isRunning = false;
+}
+
+int Game::get_input(const char* display_text)
+{
+	Input value;
+	value.input_window(display_text);
+	return value.show_input();
 }
 
 void Game::eventHandler()
