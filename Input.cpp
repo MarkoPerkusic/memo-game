@@ -58,7 +58,7 @@ void Input::handle_input()
 			SDL_Event ev;
 			while (SDL_PollEvent(&ev))
 			{
-				if (ev.type == SDL_TEXTINPUT)
+				if (ev.key.state >= '0' && ev.key.state <= '9')
 				{
 					input += ev.text.text;
 				}

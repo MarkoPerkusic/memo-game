@@ -19,11 +19,11 @@ class Game
 		void render();
 		void cleanup();
 		bool isRunning;
+		int num_of_players;
+		int num_of_cards;
 
 	private:
 		SDL_Window* window;
 		SDL_Renderer* rend;
-		int num_of_players;
-		int num_of_cards;
 
 };
