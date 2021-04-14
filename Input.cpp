@@ -13,7 +13,7 @@ Input::Input()
 
 Input::~Input() {}
 
-void Input::input_window(const char* text)
+void Input::inputWindow(const char* text)
 {
 	SDL_Window* w = SDL_CreateWindow("How many", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		W_WIDTH, W_HEIGHT, false);
@@ -27,18 +27,18 @@ void Input::input_window(const char* text)
 	TTF_Font* font = TTF_OpenFont("arial.ttf", FONT_SIZE);
 	SDL_Color font_col { 0, 255, 0 };
 	
-	Input::apply_text(font, font_col, {50, 50, 100, 100}, r, text);
+	Input::applyText(font, font_col, {50, 50, 100, 100}, r, text);
 
-	handle_input();
+	inputHandler();
 
-	Input::apply_text(font, font_col, { 150, 100, 100, 100 }, r, input.c_str());
+	Input::applyText(font, font_col, { 150, 100, 100, 100 }, r, input.c_str());
 
 	SDL_Delay(500);
 	TTF_CloseFont(font);
 	SDL_DestroyWindow(w);
 }
 
-void Input::apply_text(TTF_Font* font, SDL_Color font_col, SDL_Rect rect, SDL_Renderer* rend, const char* text)
+void Input::applyText(TTF_Font* font, SDL_Color font_col, SDL_Rect rect, SDL_Renderer* rend, const char* text)
 {
 	SDL_Surface* surface = TTF_RenderText_Solid(font, text, font_col);
 	SDL_Texture* message = SDL_CreateTextureFromSurface(rend, surface);
@@ -47,7 +47,7 @@ void Input::apply_text(TTF_Font* font, SDL_Color font_col, SDL_Rect rect, SDL_Re
 	SDL_RenderPresent(rend);
 }
 
-void Input::handle_input()
+void Input::inputHandler()
 {
 	bool running = true;
 	SDL_StartTextInput();
@@ -84,7 +84,7 @@ void Input::handle_input()
 	SDL_StopTextInput();
 }
 
-int Input::show_input() 
+int Input::inputShow()
 {
 	return std::stoi(input);
 }

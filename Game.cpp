@@ -6,10 +6,10 @@
 
 Game::Game() 
 {
-	this->isRunning = true;
-	this->num_of_cards = 0;
-	this->window = nullptr;
-	this->rend = nullptr;
+	isRunning = true;
+	num_of_cards = 0;
+	window = nullptr;
+	rend = nullptr;
 }
 Game::~Game() {}
 
@@ -28,30 +28,30 @@ void Game::setup(const char* title, int x_pos, int y_pos, int w, int h, bool ful
 
 }
 
-void Game::set_players() 
+void Game::setPlayers() 
 {
-	int players = get_input("Enter the number of players:");
+	int players = getInput("Enter the number of players:");
 	if (players != 0)
-		for (int i = players; i > 0; i--)
+		for (int i = 1; i <= players; i++)
 			num_of_players.push_back(Player(i));
 	else
 		isRunning = false;
 }
 
-void Game::set_cards()
+void Game::setCards()
 {
-	int cards = get_input("Enter the (even) number of cards");
+	int cards = getInput("Enter the (even) number of cards");
 	if (cards != 0 || cards % 2 == 0)
 		num_of_cards = cards;
 	else
 		isRunning = false;
 }
 
-int Game::get_input(const char* display_text)
+int Game::getInput(const char* display_text)
 {
 	Input value;
-	value.input_window(display_text);
-	return value.show_input();
+	value.inputWindow(display_text);
+	return value.inputShow();
 }
 
 void Game::eventHandler()
@@ -64,7 +64,9 @@ void Game::eventHandler()
 		case SDL_QUIT:
 			isRunning = false;
 			break;
-
+		case SDL_MOUSEBUTTONDOWN:
+			std::cout << ev.button.x << std::endl;
+			std::cout << ev.button.y << std::endl;
 		default:;
 	}
 }

@@ -12,9 +12,9 @@ class Game
 	public:
 		Game();
 		~Game();
-		int get_input(const char* display_text);
-		void set_players();
-		void set_cards();
+		int getInput(const char* display_text);
+		void setPlayers();
+		void setCards();
 		void setup(const char* title, int x_pos, int y_pos, int w, int h, bool fullscreen);
 		void eventHandler();
 		void update();
