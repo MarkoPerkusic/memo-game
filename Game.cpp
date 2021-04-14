@@ -1,36 +1,39 @@
 #include "Game.h"
+#include "Player.h"
 #include <iostream>
 #include <string>
+#include <vector>
 
-Game::Game() {}
+Game::Game() 
+{
+	this->isRunning = true;
+	this->num_of_cards = 0;
+	this->window = nullptr;
+	this->rend = nullptr;
+}
 Game::~Game() {}
 
 void Game::setup(const char* title, int x_pos, int y_pos, int w, int h, bool fullscreen) 
 {
 	int screen = 0;
 	if (fullscreen)
-	{
 		screen = SDL_WINDOW_FULLSCREEN;
-	}
 
-	if (SDL_Init(SDL_INIT_EVERYTHING) == 0) 
-	{
-		window = SDL_CreateWindow(title, x_pos, y_pos, w, h, screen);
-		rend = SDL_CreateRenderer(window, -1, 0);
-		SDL_SetRenderDrawColor(rend, 255, 255, 255, 255);
-		isRunning = true;
-	}
-	else
-	{
+	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 		isRunning = false;
-	}
+
+	window = SDL_CreateWindow(title, x_pos, y_pos, w, h, screen);
+	rend = SDL_CreateRenderer(window, -1, 0);
+	SDL_SetRenderDrawColor(rend, 255, 255, 255, 255);
+
 }
 
 void Game::set_players() 
 {
 	int players = get_input("Enter the number of players:");
 	if (players != 0)
-		num_of_players = players;
+		for (int i = players; i > 0; i--)
+			num_of_players.push_back(Player(i));
 	else
 		isRunning = false;
 }

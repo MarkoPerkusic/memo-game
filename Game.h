@@ -3,6 +3,8 @@
 #include <string>
 #include <iostream>
 #include "Input.h"
+#include "Player.h"
+#include <vector>
 
 class Game 
 {
@@ -19,8 +21,9 @@ class Game
 		void render();
 		void cleanup();
 		bool isRunning;
-		int num_of_players;
+		//int num_of_players;
 		int num_of_cards;
+		std::vector<Player> num_of_players;
 
 	private:
 		SDL_Window* window;
