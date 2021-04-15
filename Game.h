@@ -1,7 +1,5 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
-#include <string>
-#include <iostream>
 #include "Input.h"
 #include "Player.h"
 #include <vector>

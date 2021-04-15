@@ -1,6 +1,5 @@
 #include "Input.h"
 #include <iostream>
-#include <string>
 
 const int FONT_SIZE = 25;
 const int W_WIDTH = 450;

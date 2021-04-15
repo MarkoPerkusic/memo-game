@@ -1,8 +1,5 @@
 #include "Game.h"
-#include "Player.h"
 #include <iostream>
-#include <string>
-#include <vector>
 
 Game::Game() 
 {
