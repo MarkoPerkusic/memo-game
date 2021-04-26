@@ -12,16 +12,18 @@ int main(int argc, char* argv[])
 	SDL_RenderClear(game->rend);
 
 	for (int j = 0; j < game->num_of_rows; j++)
+	{
+		game->cards.push_back(std::vector<Card>());
 		for (int k = 0; k < game->num_of_cols; k++)
 		{
-			game->cards.push_back(std::vector<Card>());
-			Card card(j, k);
+			Card card(k, j);
 			game->cards[j].push_back(card);
 
 			SDL_SetRenderDrawColor(game->rend, 255, 0, 0, 255);
 			SDL_RenderFillRect(game->rend, &card.card_rect);
 			SDL_RenderPresent(game->rend);
 		}
+	}
 
 	while (game->isRunning)
 	{

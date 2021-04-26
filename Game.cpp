@@ -90,9 +90,9 @@ void Game::eventHandler()
 			SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
 
 			SDL_Log("Mouse position: x=%i y=%i", mouse_position.x, mouse_position.y);
-			SDL_Log("Card position: x=%i y=%i", findCardPos(&mouse_position.x), findCardPos(&mouse_position.y));
+			SDL_Log("Card position: row=%i coll=%i", findCardPos(&mouse_position.y), findCardPos(&mouse_position.x));
 			
-			update();
+			update(mouse_position);
 
 		default:;
 	}
@@ -107,17 +107,30 @@ void Game::render()
 	//SDL_RenderPresent(rend);
 }
 
-void Game::update() 
+void Game::update(SDL_Point point) 
 {
-	SDL_Rect r;
-	r.x = 50;
-	r.y = 50;
-	r.w = 50;
-	r.h = 80;
+	int r = findCardPos(&point.y);
+	int c = findCardPos(&point.x);
+	std::cout << r << std::endl;
+	std::cout << c << std::endl;
+	if(SDL_PointInRect(&point, &cards[r][c].card_rect))
+	{
+		std::cout << "TRUE" << std::endl;
+		SDL_SetRenderDrawColor(rend, 0, 0, 255, 255);
+		SDL_RenderFillRect(rend, &cards[r][c].card_rect);
+		SDL_RenderPresent(rend);
+	}
+	else
+	{
+		std::cout << "FALSE" << std::endl;
+		
+	}
 
-	SDL_SetRenderDrawColor(rend, 0, 0, 255, 255);
-	SDL_RenderFillRect(rend, &r);
-	SDL_RenderPresent(rend);
+	/*cards[r][c].select(&point);
+	std::cout << cards[r][c].card_rect.x << std::endl;
+	std::cout << cards[r][c].card_rect.y << std::endl;
+	std::cout << "------------------------------" << std::endl;*/
+	
 }
 
 int Game::findCardPos(int* a) 

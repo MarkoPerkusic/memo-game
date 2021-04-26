@@ -24,7 +24,7 @@ class Game
 		void getInput();
 		void setup(const char* title, int x_pos, int y_pos, int w, int h, bool fullscreen);
 		void eventHandler();
-		void update();
+		void update(SDL_Point point);
 		void render();
 		void cleanup();
 		bool isRunning;
