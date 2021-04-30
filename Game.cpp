@@ -34,19 +34,15 @@ void Game::getInput()
 	Fl_Int_Input* num_of_coll = new Fl_Int_Input(130, 150, 100, 30, "Number of collumns");
 	win->end();
 
-	play_but->callback((Fl_Callback*)play_cb, num_of_players);
+	play_but->callback((Fl_Callback*)playCb, num_of_players);
 	win->show();
 	Fl::run();
-
-	std::cout << atoi(num_of_players->value()) << std::endl;
-	std::cout << num_of_players->value() << std::endl;
-	std::cout << atoi(num_of_rows->value()) * atoi(num_of_coll->value()) << std::endl;
 
 	setPlayers(atoi(num_of_players->value()));
 	setCards(atoi(num_of_rows->value()), atoi(num_of_coll->value()));
 }
 
-void Game::play_cb(Fl_Widget* widg, void* val)
+void Game::playCb(Fl_Widget* widg, void* val)
 {
 	widg->window()->hide();
 }
@@ -66,7 +62,6 @@ void Game::setCards(int row, int col)
 	{
 		num_of_rows = row;
 		num_of_cols = col;
-		//cards.resize(row, std::vector<Card> (col));
 	}
 	else
 		isRunning = false;
@@ -83,9 +78,6 @@ void Game::eventHandler()
 			isRunning = false;
 			break;
 		case SDL_MOUSEBUTTONDOWN:
-			/*std::cout << ev.button.x << std::endl;
-			std::cout << ev.button.y << std::endl;
-			std::cout << "---------" << std::endl;*/
 			SDL_Point mouse_position;
 			SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
 
@@ -93,18 +85,13 @@ void Game::eventHandler()
 			SDL_Log("Card position: row=%i coll=%i", findCardPos(&mouse_position.y), findCardPos(&mouse_position.x));
 			
 			update(mouse_position);
-
-		default:;
 	}
 }
 
 void Game::render()
 {
-	int SDL_RenderClear(SDL_Renderer*);
-	void SDL_RenderPresent(SDL_Renderer*);
-	
-	//SDL_RenderClear(rend);
-	//SDL_RenderPresent(rend);
+	SDL_RenderClear(rend);
+	SDL_RenderPresent(rend);
 }
 
 void Game::update(SDL_Point point) 
@@ -113,6 +100,7 @@ void Game::update(SDL_Point point)
 	int c = findCardPos(&point.x);
 	std::cout << r << std::endl;
 	std::cout << c << std::endl;
+
 	if(SDL_PointInRect(&point, &cards[r][c].card_rect))
 	{
 		std::cout << "TRUE" << std::endl;
@@ -125,11 +113,6 @@ void Game::update(SDL_Point point)
 		std::cout << "FALSE" << std::endl;
 		
 	}
-
-	/*cards[r][c].select(&point);
-	std::cout << cards[r][c].card_rect.x << std::endl;
-	std::cout << cards[r][c].card_rect.y << std::endl;
-	std::cout << "------------------------------" << std::endl;*/
 	
 }
 

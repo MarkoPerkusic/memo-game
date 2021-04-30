@@ -35,10 +35,12 @@ class Game
 		SDL_Window* window;
 		SDL_Renderer* rend;
 		int findCardPos(int* a);
+		int first_card_value;
+		int second_card_value;
 
 	private:
 		void setPlayers(int players);
 		void setCards(int row, int col);
-		static void play_cb(Fl_Widget* widg, void* val);
+		static void playCb(Fl_Widget* widg, void* val);
 
 };
