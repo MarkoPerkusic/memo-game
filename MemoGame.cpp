@@ -17,6 +17,8 @@ int main(int argc, char* argv[])
 		for (int r = 0; r < game->num_of_cols; r++)
 		{
 			Card card(r, c);
+			if (c < 2)
+				card.card_value = 1;
 			game->cards[c].push_back(card);
 
 			SDL_SetRenderDrawColor(game->rend, 255, 0, 0, 255);
@@ -25,17 +27,19 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	for (Player& p : game->players)
+	
+	while (game->isRunning)
 	{
-		while (game->isRunning)
+		for (Player& p : game->players)
 		{
+			if (!game->isRunning)
+				break;
 			//p.pick_card();
-			//std::cout << &p << std::endl;
-			game->eventHandler();
-
+			std::cout << p.getName() << std::endl;
+			game->eventHandler(&p);
+			//std::cout << "CARD " << p.selected_cards[0] << std::endl;
 			//game->update();
 			//game->render();
-
 		}
 	}
 

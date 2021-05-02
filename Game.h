@@ -1,4 +1,3 @@
-#include "Input.h"
 #include "Player.h"
 #include "Card.h"
 
@@ -23,7 +22,7 @@ class Game
 		~Game();
 		void getInput();
 		void setup(const char* title, int x_pos, int y_pos, int w, int h, bool fullscreen);
-		void eventHandler();
+		void eventHandler(Player* p);
 		void update(SDL_Point point);
 		void render();
 		void cleanup();

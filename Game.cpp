@@ -67,25 +67,34 @@ void Game::setCards(int row, int col)
 		isRunning = false;
 }
 
-void Game::eventHandler()
+void Game::eventHandler(Player* p)
 {
 	SDL_Event ev;
-	SDL_PollEvent(&ev);
+	SDL_Point mouse_position;
 
-	switch (ev.type)
+	while (isRunning && SDL_WaitEvent(&ev) && p->isPlaying)
 	{
-		case SDL_QUIT:
-			isRunning = false;
-			break;
-		case SDL_MOUSEBUTTONDOWN:
-			SDL_Point mouse_position;
-			SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
-
-			SDL_Log("Mouse position: x=%i y=%i", mouse_position.x, mouse_position.y);
-			SDL_Log("Card position: row=%i coll=%i", findCardPos(&mouse_position.y), findCardPos(&mouse_position.x));
-			
-			update(mouse_position);
+		switch (ev.type)
+		{
+			case SDL_QUIT:
+				isRunning = false;
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+				p->pick_card(cards[findCardPos(&mouse_position.y)][findCardPos(&mouse_position.x)]);
+				std::cout << "CARD VALUE " <<
+					cards[findCardPos(&mouse_position.y)][findCardPos(&mouse_position.x)].card_value << std::endl;
+				update(mouse_position);
+				p->checkCards();
+				
+				/*SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
+				SDL_Log("Card position: row=%i coll=%i", findCardPos(&mouse_position.y), findCardPos(&mouse_position.x));
+				p->selected_cards.insert(
+					p->selected_cards.begin(),
+					cards[findCardPos(&mouse_position.y)][findCardPos(&mouse_position.x)]
+					.card_value);*/
+		}
 	}
+	p->selected_cards.clear();
 }
 
 void Game::render()
