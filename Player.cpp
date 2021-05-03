@@ -3,7 +3,6 @@
 Player::Player() 
 {
 	score = 0;
-	isPlaying = true;
 }
 
 Player::~Player() {}

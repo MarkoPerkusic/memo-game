@@ -32,10 +32,11 @@ int main(int argc, char* argv[])
 	{
 		for (Player& p : game->players)
 		{
+			p.isPlaying = true;
+			std::cout << game->isRunning << std::endl;
 			if (!game->isRunning)
 				break;
 			//p.pick_card();
-			std::cout << p.getName() << std::endl;
 			game->eventHandler(&p);
 			//std::cout << "CARD " << p.selected_cards[0] << std::endl;
 			//game->update();

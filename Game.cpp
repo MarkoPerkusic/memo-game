@@ -81,11 +81,14 @@ void Game::eventHandler(Player* p)
 				break;
 			case SDL_MOUSEBUTTONDOWN:
 				SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
-				p->pick_card(cards[findCardPos(&mouse_position.y)][findCardPos(&mouse_position.x)]);
-				std::cout << "CARD VALUE " <<
+				std::cout << "CARD VALUE " << 
 					cards[findCardPos(&mouse_position.y)][findCardPos(&mouse_position.x)].card_value << std::endl;
 				update(mouse_position);
-				p->checkCards();
+				if (cards[findCardPos(&mouse_position.y)][findCardPos(&mouse_position.x)].is_open)
+				{ 
+					p->pick_card(cards[findCardPos(&mouse_position.y)][findCardPos(&mouse_position.x)]);
+					p->checkCards();
+				}
 				
 				/*SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
 				SDL_Log("Card position: row=%i coll=%i", findCardPos(&mouse_position.y), findCardPos(&mouse_position.x));
@@ -95,6 +98,7 @@ void Game::eventHandler(Player* p)
 					.card_value);*/
 		}
 	}
+
 	p->selected_cards.clear();
 }
 
@@ -108,8 +112,8 @@ void Game::update(SDL_Point point)
 {
 	int r = findCardPos(&point.y);
 	int c = findCardPos(&point.x);
-	std::cout << r << std::endl;
-	std::cout << c << std::endl;
+	/*std::cout << r << std::endl;
+	std::cout << c << std::endl;*/
 
 	if(SDL_PointInRect(&point, &cards[r][c].card_rect))
 	{
@@ -117,6 +121,7 @@ void Game::update(SDL_Point point)
 		SDL_SetRenderDrawColor(rend, 0, 0, 255, 255);
 		SDL_RenderFillRect(rend, &cards[r][c].card_rect);
 		SDL_RenderPresent(rend);
+		cards[r][c].is_open = true;
 	}
 	else
 	{
