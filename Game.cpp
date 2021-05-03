@@ -80,6 +80,7 @@ void Game::eventHandler(Player* p)
 				isRunning = false;
 				break;
 			case SDL_MOUSEBUTTONDOWN:
+				SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
 				p->pick_card(cards[findCardPos(&mouse_position.y)][findCardPos(&mouse_position.x)]);
 				std::cout << "CARD VALUE " <<
 					cards[findCardPos(&mouse_position.y)][findCardPos(&mouse_position.x)].card_value << std::endl;
