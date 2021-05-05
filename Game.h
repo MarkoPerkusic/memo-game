@@ -1,5 +1,5 @@
 #include "Player.h"
-#include "Card.h"
+//#include "Card.h"
 
 #include <SDL.h>
 #include <SDL_ttf.h>
@@ -34,8 +34,6 @@ class Game
 		SDL_Window* window;
 		SDL_Renderer* rend;
 		int findCardPos(int* a);
-		int first_card_value;
-		int second_card_value;
 
 	private:
 		void setPlayers(int players);

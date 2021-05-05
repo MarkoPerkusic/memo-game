@@ -1,5 +1,5 @@
 #include <SDL.h>
-#pragma once
+//#pragma once
 
 class Card 
 {
