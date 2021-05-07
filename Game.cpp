@@ -81,20 +81,28 @@ void Game::eventHandler(Player* p)
 				break;
 			case SDL_MOUSEBUTTONDOWN:
 				SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
+
+				//Limit the click on the area where the cards are displayed
 				if (mouse_position.x >= 50 && mouse_position.x <= 100 + 100 * (num_of_cols-1) &&
 					mouse_position.y >= 50 && mouse_position.y <= 130 + 100 * (num_of_rows-1))
 				{
+					//Check if the click was on the card
 					update(mouse_position);
 					if (cards[findCardPos(&mouse_position.y)][findCardPos(&mouse_position.x)].is_open)
 					{
-						p->pick_card(cards[findCardPos(&mouse_position.y)][findCardPos(&mouse_position.x)]);
+						p->selectCard(cards[findCardPos(&mouse_position.y)][findCardPos(&mouse_position.x)]);
 						p->checkCards();
+					}
+					
+					if (!p->isPlaying)
+					{
+						std::cout << "P NOT PLAYING" << std::endl;
+						update(p->selected_cards[0], p->selected_cards[1]);
+						p->selected_cards.clear();
 					}
 				}
 		}
 	}
-
-	p->selected_cards.clear();
 }
 
 void Game::render()
@@ -103,12 +111,22 @@ void Game::render()
 	SDL_RenderPresent(rend);
 }
 
+void Game::update(Card card1, Card card2)
+{
+	std::cout << "UPDATE CARDS" << std::endl;
+	SDL_Delay(1000);
+	const SDL_Rect rects[] = { card2.card_rect, card1.card_rect };
+	SDL_SetRenderDrawColor(rend, 255, 0, 0, 255);
+	SDL_RenderFillRects(rend, rects, 2);
+	SDL_RenderPresent(rend);
+}
+
 void Game::update(SDL_Point point) 
 {
 	int r = findCardPos(&point.y);
 	int c = findCardPos(&point.x);
-	std::cout << r << std::endl;
-	std::cout << c << std::endl;
+	//std::cout << r << std::endl;
+	//std::cout << c << std::endl;
 	
 	if (SDL_PointInRect(&point, &cards[r][c].card_rect))
 	{

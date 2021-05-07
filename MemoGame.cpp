@@ -33,7 +33,8 @@ int main(int argc, char* argv[])
 		for (Player& p : game->players)
 		{
 			p.isPlaying = true;
-			std::cout << game->isRunning << std::endl;
+			//std::cout << game->isRunning << std::endl;
+			std::cout << "Player: " << p.getName() << "\n Score: " << p.score << std::endl;
 			if (!game->isRunning)
 				break;
 			//p.pick_card();
@@ -42,6 +43,11 @@ int main(int argc, char* argv[])
 			//game->update();
 			//game->render();
 		}
+	}
+
+	for (Player& p : game->players)
+	{
+		std::cout << "\n ------------- \n Player: " << p.getName() << "\n Score: " << p.score << std::endl;
 	}
 
 	game->cleanup();

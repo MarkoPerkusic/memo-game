@@ -15,7 +15,7 @@ class Card
 		bool is_open;
 		SDL_Rect card_rect;
 		void select(SDL_Point* point);
-		void flip();
+		void close();
 
 
 	//private:

@@ -1,7 +1,10 @@
 #include "Card.h"
 #include <iostream>
 
-Card::Card(){}
+Card::Card()
+{
+	is_open = false;
+}
 
 Card::Card(int r, int c)
 {
@@ -23,6 +26,8 @@ void Card::select(SDL_Point* point)
 		is_open = true;
 }
 
-void Card::flip()
-{}
+void Card::close()
+{
+	is_open = false;
+}
 
