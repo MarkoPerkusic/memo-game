@@ -35,6 +35,7 @@ class Game
 		SDL_Window* window;
 		SDL_Renderer* rend;
 		int findCardPos(int* a);
+		int available_points;
 
 	private:
 		void setPlayers(int players);

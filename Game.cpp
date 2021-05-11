@@ -62,6 +62,7 @@ void Game::setCards(int row, int col)
 	{
 		num_of_rows = row;
 		num_of_cols = col;
+		available_points = row * col;
 	}
 	else
 		isRunning = false;
@@ -92,14 +93,22 @@ void Game::eventHandler(Player* p)
 					{
 						p->selectCard(cards[findCardPos(&mouse_position.y)][findCardPos(&mouse_position.x)]);
 						p->checkCards();
+						//In case of match, reduce available points
+						if (p->isPlaying)
+						{
+							available_points--;
+							std::cout << "\n" << available_points << std::endl;
+						}
+						//In case of the wrong cards, close them back
+						else
+						{
+							update(p->selected_cards[0], p->selected_cards[1]);
+							p->selected_cards.clear();
+							std::cout << "\nCLOSING" << std::endl;
+						}
 					}
-					
-					if (!p->isPlaying)
-					{
-						std::cout << "P NOT PLAYING" << std::endl;
-						update(p->selected_cards[0], p->selected_cards[1]);
-						p->selected_cards.clear();
-					}
+					if (available_points == 0)
+						isRunning = false;
 				}
 		}
 	}
@@ -135,6 +144,7 @@ void Game::update(SDL_Point point)
 		SDL_RenderFillRect(rend, &cards[r][c].card_rect);
 		SDL_RenderPresent(rend);
 		cards[r][c].is_open = true;
+		
 	}
 	else
 	{
