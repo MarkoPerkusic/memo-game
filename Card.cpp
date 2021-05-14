@@ -28,6 +28,7 @@ void Card::select(SDL_Point* point)
 
 void Card::close()
 {
+	printf("\nCLOSING CARD C: %i R: %i", row, col);
 	is_open = false;
 }
 

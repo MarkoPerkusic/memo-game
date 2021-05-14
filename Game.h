@@ -23,7 +23,7 @@ class Game
 		void getInput();
 		void setup(const char* title, int x_pos, int y_pos, int w, int h, bool fullscreen);
 		void eventHandler(Player* p);
-		void update(SDL_Point point);
+		bool update(SDL_Point point);
 		void update(Card card1, Card card2);
 		void render();
 		void cleanup();

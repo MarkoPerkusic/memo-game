@@ -20,7 +20,7 @@ std::string Player::getName()
 
 void Player::selectCard(Card selected)
 {
-	selected_cards.insert(selected_cards.begin(),selected);
+	selected_cards.insert(selected_cards.begin(), selected);
 }
 
 void Player::checkCards()
@@ -33,12 +33,11 @@ void Player::checkCards()
 		if (isPlaying)
 		{
 			addPoint();
-			selected_cards.clear();
 			//printf("POINT\n");
 		}
 		else
 		{
-			//printf("NOT PLAYING \n");
+			printf("NOT PLAYING \n");
 			selected_cards[0].close();
 			selected_cards[1].close();
 		}

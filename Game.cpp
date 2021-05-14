@@ -88,23 +88,26 @@ void Game::eventHandler(Player* p)
 					mouse_position.y >= 50 && mouse_position.y <= 130 + 100 * (num_of_rows-1))
 				{
 					//Check if the click was on the card
-					update(mouse_position);
-					if (cards[findCardPos(&mouse_position.y)][findCardPos(&mouse_position.x)].is_open)
+					if (update(mouse_position))
 					{
 						p->selectCard(cards[findCardPos(&mouse_position.y)][findCardPos(&mouse_position.x)]);
 						p->checkCards();
 						//In case of match, reduce available points
-						if (p->isPlaying)
+						if (p->isPlaying && p->selected_cards.size() == 2)
 						{
 							available_points--;
 							std::cout << "\n" << available_points << std::endl;
+							p->selected_cards.clear();
 						}
 						//In case of the wrong cards, close them back
-						else
+						if (!p->isPlaying && p->selected_cards.size() == 2)
 						{
 							update(p->selected_cards[0], p->selected_cards[1]);
-							p->selected_cards.clear();
+														
 							std::cout << "\nCLOSING" << std::endl;
+							cards[p->selected_cards[0].col][p->selected_cards[0].row].is_open = false;
+							cards[p->selected_cards[1].col][p->selected_cards[1].row].is_open = false;
+							p->selected_cards.clear();
 						}
 					}
 					if (available_points == 0)
@@ -130,25 +133,29 @@ void Game::update(Card card1, Card card2)
 	SDL_RenderPresent(rend);
 }
 
-void Game::update(SDL_Point point) 
+bool Game::update(SDL_Point point) 
 {
 	int r = findCardPos(&point.y);
 	int c = findCardPos(&point.x);
 	//std::cout << r << std::endl;
 	//std::cout << c << std::endl;
 	
-	if (SDL_PointInRect(&point, &cards[r][c].card_rect))
+	std::cout << "\nCARD STATUS " << !cards[r][c].is_open << std::endl;
+
+	if (SDL_PointInRect(&point, &cards[r][c].card_rect) && !cards[r][c].is_open)
 	{
 		std::cout << "TRUE" << std::endl;
 		SDL_SetRenderDrawColor(rend, 0, 0, 255, 255);
 		SDL_RenderFillRect(rend, &cards[r][c].card_rect);
 		SDL_RenderPresent(rend);
 		cards[r][c].is_open = true;
+		return true;
 		
 	}
 	else
 	{
 		std::cout << "FALSE" << std::endl;
+		return false;
 
 	}
 	
