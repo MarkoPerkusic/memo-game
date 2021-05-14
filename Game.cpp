@@ -62,7 +62,7 @@ void Game::setCards(int row, int col)
 	{
 		num_of_rows = row;
 		num_of_cols = col;
-		available_points = row * col;
+		available_points = row * col / 2;
 	}
 	else
 		isRunning = false;
@@ -79,7 +79,6 @@ void Game::eventHandler(Player* p)
 		{
 			case SDL_QUIT:
 				isRunning = false;
-				break;
 			case SDL_MOUSEBUTTONDOWN:
 				SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
 
@@ -90,8 +89,9 @@ void Game::eventHandler(Player* p)
 					//Check if the click was on the card
 					if (update(mouse_position))
 					{
-						p->selectCard(cards[findCardPos(&mouse_position.y)][findCardPos(&mouse_position.x)]);
-						p->checkCards();
+						p->selectCard(&cards[findCardPos(&mouse_position.y)][findCardPos(&mouse_position.x)]);
+						if (p->selected_cards.size() == 2)
+							p->checkCards();
 						//In case of match, reduce available points
 						if (p->isPlaying && p->selected_cards.size() == 2)
 						{
@@ -102,12 +102,9 @@ void Game::eventHandler(Player* p)
 						//In case of the wrong cards, close them back
 						if (!p->isPlaying && p->selected_cards.size() == 2)
 						{
-							update(p->selected_cards[0], p->selected_cards[1]);
-														
-							std::cout << "\nCLOSING" << std::endl;
-							cards[p->selected_cards[0].col][p->selected_cards[0].row].is_open = false;
-							cards[p->selected_cards[1].col][p->selected_cards[1].row].is_open = false;
-							p->selected_cards.clear();
+							update(*p->selected_cards[0], *p->selected_cards[1]);							
+							//std::cout << "\nCLOSING" << std::endl;
+							p->closeCards();
 						}
 					}
 					if (available_points == 0)

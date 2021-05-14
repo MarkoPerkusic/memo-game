@@ -9,12 +9,13 @@ class Player
 		Player(int player_id);
 		~Player();
 		std::string getName();
-		void selectCard(Card selected);
+		void selectCard(Card* selected);
 		bool isPlaying;
 		void checkCards();
 		void addPoint();
-		std::vector<Card> selected_cards;
+		std::vector<Card*> selected_cards;
 		int score;
+		void closeCards();
 
 	private:
 		std::string name;
