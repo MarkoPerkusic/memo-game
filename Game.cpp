@@ -8,19 +8,14 @@ Game::Game()
 }
 Game::~Game() {}
 
-void Game::setup(const char* title, int x_pos, int y_pos, int w, int h, bool fullscreen) 
+void Game::setup(const char* title, int x_pos, int y_pos, int w, int h) 
 {
-	int screen = 0;
-	if (fullscreen)
-		screen = SDL_WINDOW_FULLSCREEN;
-
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 		isRunning = false;
 
-	window = SDL_CreateWindow(title, x_pos, y_pos, w, h, screen);
+	window = SDL_CreateWindow(title, x_pos, y_pos, w, h, 0);
 	rend = SDL_CreateRenderer(window, -1, 0);
 	SDL_SetRenderDrawColor(rend, 255, 255, 255, 255);
-
 }
 
 void Game::getInput()
@@ -229,7 +224,11 @@ void Game::showResults(std::vector<Player> scores)
 		
 		//Mark the player if it has a top result
 		if (i.score == top_result)
-			text_stlye.append(std::string(name_and_score.size(), 'A') + "\n");
+		{
+			text_to_print.append("\tWINNER");
+			//Increase size by 8 because of \tWINNER
+			text_stlye.append(std::string(name_and_score.size() + 8, 'A') + "\n");
+		}
 	}
 	
 	Fl_Text_Display::Style_Table_Entry style[] = { FL_DARK_YELLOW, FL_COURIER, 19 };

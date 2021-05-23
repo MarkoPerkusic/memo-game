@@ -7,12 +7,11 @@ int main(int argc, char* argv[])
 
 	game->getInput();
 	if(game->isRunning)
-		game->setup("Memo", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1000, 600, false);
+		game->setup("Memo", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1000, 600);
 
 	int max_points = game->available_points;
 
 	SDL_SetRenderDrawColor(game->rend, 0, 0, 0, 255);
-	//SDL_RenderClear(game->rend);
 
 	for (int c = 0; c < game->num_of_rows; c++)
 	{
@@ -45,9 +44,8 @@ int main(int argc, char* argv[])
 	for(int i = 0; i <= max_points; i++)
 		for (Player& p : game->players)
 			if (i == p.score)
-				game->scoreboard.push_back(p);
+				game->scoreboard.insert(game->scoreboard.begin(), p);
 
-	std::reverse(game->scoreboard.begin(), game->scoreboard.end());
 	game->showResults(game->scoreboard);
 
 	game->cleanup();
