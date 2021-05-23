@@ -215,17 +215,37 @@ bool Game::update(SDL_Point point)
 
 void Game::showResults(std::vector<Player> scores)
 {
+	//Player name and score
 	std::string text_to_print = "";
+	std::string text_stlye = "";
+
+	//First player will always have higest score
+	int top_result = scores[0].score;
 
 	for (Player& i : scores)
-		text_to_print = text_to_print + "\n" + i.getName() + " : " + std::to_string(i.score);
-
+	{
+		std::string name_and_score = i.getName() + " : " + std::to_string(i.score);
+		text_to_print.append("\n" + name_and_score);
+		
+		//Mark the player if it has a top result
+		if (i.score == top_result)
+			text_stlye.append(std::string(name_and_score.size(), 'A') + "\n");
+	}
+	
+	Fl_Text_Display::Style_Table_Entry style[] = { {  FL_DARK_YELLOW, FL_COURIER, 19 } };
 	Fl_Window* win = new Fl_Window(200, 200);
-	Fl_Text_Buffer* buff = new Fl_Text_Buffer();
+	Fl_Text_Buffer* text_buff = new Fl_Text_Buffer();
+	Fl_Text_Buffer* style_buff = new Fl_Text_Buffer();
 	Fl_Text_Display* disp = new Fl_Text_Display(20, 20, 150, 150, "PLAYERS RANKINGS");
-	disp->buffer(buff);
+	
+	disp->buffer(text_buff);
+	int stable_size = sizeof(style) / sizeof(style[0]);
+	disp->highlight_data(style_buff, style, stable_size, 'A', 0, 0);
+	text_buff->text(text_to_print.c_str());
+	style_buff->text(text_stlye.c_str());
+	
+	win->resizable(*disp);
 	win->show();
-	buff->text(text_to_print.c_str());
 	Fl::run();
 }
 
