@@ -232,15 +232,14 @@ void Game::showResults(std::vector<Player> scores)
 			text_stlye.append(std::string(name_and_score.size(), 'A') + "\n");
 	}
 	
-	Fl_Text_Display::Style_Table_Entry style[] = { {  FL_DARK_YELLOW, FL_COURIER, 19 } };
-	Fl_Window* win = new Fl_Window(200, 200);
+	Fl_Text_Display::Style_Table_Entry style[] = { FL_DARK_YELLOW, FL_COURIER, 19 };
+	Fl_Window* win = new Fl_Window(300, 200);
 	Fl_Text_Buffer* text_buff = new Fl_Text_Buffer();
 	Fl_Text_Buffer* style_buff = new Fl_Text_Buffer();
-	Fl_Text_Display* disp = new Fl_Text_Display(20, 20, 150, 150, "PLAYERS RANKINGS");
+	Fl_Text_Display* disp = new Fl_Text_Display(40, 20, 200, 150, "PLAYERS RANKINGS");
 	
 	disp->buffer(text_buff);
-	int stable_size = sizeof(style) / sizeof(style[0]);
-	disp->highlight_data(style_buff, style, stable_size, 'A', 0, 0);
+	disp->highlight_data(style_buff, style, 1, 'A', 0, 0);
 	text_buff->text(text_to_print.c_str());
 	style_buff->text(text_stlye.c_str());
 	
