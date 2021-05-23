@@ -25,33 +25,18 @@ void Player::selectCard(Card* selected)
 
 void Player::checkCards()
 {
-	//printf("selected_cards.size %i \n", selected_cards.size());
-	//if (selected_cards.size() == 2)
-	//{
-	//	isPlaying = selected_cards[0]->card_value == selected_cards[1]->card_value;
-	//	//printf("SIZE = 2 \n");
-	//	if (isPlaying)
-	//	{
-	//		addPoint();
-	//		//printf("POINT\n");
-	//		//selected_cards.clear();
-	//	}
-	//	else
-	//	{
-	//		printf("NOT PLAYING \n");
-	//		selected_cards[0]->close();
-	//		selected_cards[1]->close();
-	//	}
-	//}
 	isPlaying = selected_cards[0]->card_value == selected_cards[1]->card_value;
 	if (isPlaying)
+	{
 		addPoint();
-	selected_cards[0]->close();
-	selected_cards[1]->close();
+		selected_cards[0]->is_open = true;
+		selected_cards[1]->is_open = true;
+	}
 }
 
 void  Player::closeCards()
 {
+	printf("\nCLOSING SELECTED CARD");
 	selected_cards[0]->close();
 	selected_cards[1]->close();
 	selected_cards.clear();

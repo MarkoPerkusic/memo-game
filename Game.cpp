@@ -56,13 +56,47 @@ void Game::setPlayers(int n_of_players)
 		isRunning = false;
 }
 
+/*
+* Return the value that is randomly selected
+* from the deck which has all the values that
+* cards can have
+*/
+int Game::shuffleCardValues()
+{
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+
+	shuffle(card_values_deck.begin(), card_values_deck.end(), std::default_random_engine(seed));
+	int value = card_values_deck.front();
+	card_values_deck.erase(card_values_deck.begin());
+	return value;
+	/*
+	int value_position = std::rand() % card_values_deck.size();
+	int value = card_values_deck.at(value_position);
+
+	//remove assigned value
+	card_values_deck.erase(card_values_deck.begin() + value_position);
+	return value;
+	*/
+}
+
 void Game::setCards(int row, int col)
 {
 	if (row * col > 0 || row * col % 2 == 0)
 	{
 		num_of_rows = row;
 		num_of_cols = col;
+
+		//at this stage, the max number of points in game
 		available_points = row * col / 2;
+		
+		//crete card value number that the pair of cards will have in order to be matched
+		//1 number is assigned to 2 cards, therefore card max value is equal to max available points
+		for (int i = 1; i <= available_points; i++)
+			card_values_deck.push_back(i);
+
+		//duplicate cards value numbers so that each card will have randomly assigned number from deck
+		card_values_deck.insert(card_values_deck.end(), 
+				card_values_deck.begin(), card_values_deck.end());
 	}
 	else
 		isRunning = false;
@@ -89,12 +123,14 @@ void Game::eventHandler(Player* p)
 					//Check if the click was on the card
 					if (update(mouse_position))
 					{
+						std::cout << "CARD SELECTED\n" << available_points << std::endl;
 						p->selectCard(&cards[findCardPos(&mouse_position.y)][findCardPos(&mouse_position.x)]);
 						if (p->selected_cards.size() == 2)
 							p->checkCards();
 						//In case of match, reduce available points
 						if (p->isPlaying && p->selected_cards.size() == 2)
 						{
+							printf("\nLOWERING AVAIL POINTS");
 							available_points--;
 							std::cout << "\n" << available_points << std::endl;
 							p->selected_cards.clear();
@@ -102,14 +138,36 @@ void Game::eventHandler(Player* p)
 						//In case of the wrong cards, close them back
 						if (!p->isPlaying && p->selected_cards.size() == 2)
 						{
-							update(*p->selected_cards[0], *p->selected_cards[1]);							
-							//std::cout << "\nCLOSING" << std::endl;
+							printf("\nLOSING TURN!");
+							update(*p->selected_cards[0], *p->selected_cards[1]);
 							p->closeCards();
 						}
 					}
+					else
+						std::cout << "CARD NOT SELECTED\n" << available_points << std::endl;
+					
 					if (available_points == 0)
 						isRunning = false;
 				}
+				
+
+			/*case SDL_MOUSEWHEEL:
+				if (ev.wheel.y > 0)
+				{
+					std::cout << ev.wheel.y << std::endl;
+				}
+				else if (ev.wheel.y < 0)
+				{
+					std::cout << ev.wheel.y << std::endl;
+				}
+				if (ev.wheel.x > 0)
+				{
+					std::cout << ev.wheel.x << std::endl;
+				}
+				else if (ev.wheel.x < 0)
+				{
+					std::cout << ev.wheel.x << std::endl;
+				}*/
 		}
 	}
 }
@@ -122,7 +180,6 @@ void Game::render()
 
 void Game::update(Card card1, Card card2)
 {
-	std::cout << "UPDATE CARDS" << std::endl;
 	SDL_Delay(1000);
 	const SDL_Rect rects[] = { card2.card_rect, card1.card_rect };
 	SDL_SetRenderDrawColor(rend, 255, 0, 0, 255);
@@ -134,10 +191,10 @@ bool Game::update(SDL_Point point)
 {
 	int r = findCardPos(&point.y);
 	int c = findCardPos(&point.x);
-	//std::cout << r << std::endl;
-	//std::cout << c << std::endl;
 	
-	std::cout << "\nCARD STATUS " << !cards[r][c].is_open << std::endl;
+	std::cout << "TRUE " << 1 << std::endl;
+	std::cout << "FALSE " << 0 << std::endl;
+	std::cout << "\nCARD STATUS " << cards[r][c].is_open << std::endl;
 
 	if (SDL_PointInRect(&point, &cards[r][c].card_rect) && !cards[r][c].is_open)
 	{
@@ -145,9 +202,7 @@ bool Game::update(SDL_Point point)
 		SDL_SetRenderDrawColor(rend, 0, 0, 255, 255);
 		SDL_RenderFillRect(rend, &cards[r][c].card_rect);
 		SDL_RenderPresent(rend);
-		cards[r][c].is_open = true;
 		return true;
-		
 	}
 	else
 	{
@@ -156,6 +211,22 @@ bool Game::update(SDL_Point point)
 
 	}
 	
+}
+
+void Game::showResults(std::vector<Player> scores)
+{
+	std::string text_to_print = "";
+
+	for (Player& i : scores)
+		text_to_print = text_to_print + "\n" + i.getName() + " : " + std::to_string(i.score);
+
+	Fl_Window* win = new Fl_Window(200, 200);
+	Fl_Text_Buffer* buff = new Fl_Text_Buffer();
+	Fl_Text_Display* disp = new Fl_Text_Display(20, 20, 150, 150, "PLAYERS RANKINGS");
+	disp->buffer(buff);
+	win->show();
+	buff->text(text_to_print.c_str());
+	Fl::run();
 }
 
 int Game::findCardPos(int* a) 

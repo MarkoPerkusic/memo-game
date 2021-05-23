@@ -9,8 +9,6 @@ class Card
 		~Card();
 		int row;
 		int col;
-		//static const int card_h;
-		//static const int card_w;
 		int card_value;
 		bool is_open;
 		SDL_Rect card_rect;

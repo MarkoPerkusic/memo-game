@@ -1,5 +1,6 @@
 #include "Game.h"
 
+
 int main(int argc, char* argv[])
 {
 	Game *game = new Game();
@@ -8,8 +9,10 @@ int main(int argc, char* argv[])
 	if(game->isRunning)
 		game->setup("Memo", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1000, 600, false);
 
+	int max_points = game->available_points;
+
 	SDL_SetRenderDrawColor(game->rend, 0, 0, 0, 255);
-	SDL_RenderClear(game->rend);
+	//SDL_RenderClear(game->rend);
 
 	for (int c = 0; c < game->num_of_rows; c++)
 	{
@@ -17,8 +20,7 @@ int main(int argc, char* argv[])
 		for (int r = 0; r < game->num_of_cols; r++)
 		{
 			Card card(r, c);
-			if (c < 2)
-				card.card_value = 1;
+			card.card_value = game->shuffleCardValues();
 			game->cards[c].push_back(card);
 
 			SDL_SetRenderDrawColor(game->rend, 255, 0, 0, 255);
@@ -33,22 +35,20 @@ int main(int argc, char* argv[])
 		for (Player& p : game->players)
 		{
 			p.isPlaying = true;
-			//std::cout << game->isRunning << std::endl;
-			std::cout << "Player: " << p.getName() << "\n Score: " << p.score << std::endl;
+			game->eventHandler(&p);
+
 			if (!game->isRunning)
 				break;
-			//p.pick_card();
-			game->eventHandler(&p);
-			//std::cout << "CARD " << p.selected_cards[0] << std::endl;
-			//game->update();
-			//game->render();
 		}
 	}
 
-	for (Player& p : game->players)
-	{
-		std::cout << "\n ------------- \n Player: " << p.getName() << "\n Score: " << p.score << std::endl;
-	}
+	for(int i = 0; i <= max_points; i++)
+		for (Player& p : game->players)
+			if (i == p.score)
+				game->scoreboard.push_back(p);
+
+	std::reverse(game->scoreboard.begin(), game->scoreboard.end());
+	game->showResults(game->scoreboard);
 
 	game->cleanup();
 	return 0;

@@ -10,9 +10,14 @@
 #include<FL/Fl_Button.H>
 #include<FL/Fl_Int_Input.H>
 #include<FL/Fl_Output.H>
+#include<FL/Fl_Text_Display.H>
 
 #include <vector>
 #include <iostream>
+#include <algorithm>
+#include <chrono>
+#include <random>
+#include <map>
 
 class Game 
 {
@@ -36,6 +41,11 @@ class Game
 		SDL_Renderer* rend;
 		int findCardPos(int* a);
 		int available_points;
+		std::vector<int> card_values_deck;
+		int shuffleCardValues();
+		//void showResults(std::map<int, std::string> M);
+		std::vector<Player> scoreboard;
+		void showResults(std::vector<Player> scores);
 
 	private:
 		void setPlayers(int players);
