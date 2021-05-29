@@ -64,14 +64,6 @@ int Game::shuffleCardValues()
 	int value = card_values_deck.front();
 	card_values_deck.erase(card_values_deck.begin());
 	return value;
-	/*
-	int value_position = std::rand() % card_values_deck.size();
-	int value = card_values_deck.at(value_position);
-
-	//remove assigned value
-	card_values_deck.erase(card_values_deck.begin() + value_position);
-	return value;
-	*/
 }
 
 void Game::setCards(int row, int col)
@@ -81,15 +73,15 @@ void Game::setCards(int row, int col)
 		num_of_rows = row;
 		num_of_cols = col;
 
-		//at this stage, the max number of points in game
+		//At this stage, the max number of points in game
 		available_points = row * col / 2;
 		
-		//crete card value number that the pair of cards will have in order to be matched
+		//Crete card value number that the pair of cards will have in order to be matched
 		//1 number is assigned to 2 cards, therefore card max value is equal to max available points
 		for (int i = 1; i <= available_points; i++)
 			card_values_deck.push_back(i);
 
-		//duplicate cards value numbers so that each card will have randomly assigned number from deck
+		//Duplicate cards value numbers so that each card will have randomly assigned number from deck
 		card_values_deck.insert(card_values_deck.end(), 
 				card_values_deck.begin(), card_values_deck.end());
 	}
@@ -112,8 +104,8 @@ void Game::eventHandler(Player* p)
 				SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
 
 				//Limit the click on the area where the cards are displayed
-				if (mouse_position.x >= 50 && mouse_position.x <= 100 + 100 * (num_of_cols-1) &&
-					mouse_position.y >= 50 && mouse_position.y <= 130 + 100 * (num_of_rows-1))
+				if (mouse_position.x >= 100 && mouse_position.x <= 150 + 100 * (num_of_cols-1) &&
+					mouse_position.y >= 70 && mouse_position.y <= 150 + 100 * (num_of_rows-1))
 				{
 					//Check if the click was on the card
 					if (update(mouse_position))
@@ -136,6 +128,7 @@ void Game::eventHandler(Player* p)
 							printf("\nLOSING TURN!");
 							update(*p->selected_cards[0], *p->selected_cards[1]);
 							p->closeCards();
+							displayPlayers(*p, 0, 0, 0);
 						}
 					}
 					else
@@ -186,25 +179,17 @@ bool Game::update(SDL_Point point)
 {
 	int r = findCardPos(&point.y);
 	int c = findCardPos(&point.x);
-	
-	std::cout << "TRUE " << 1 << std::endl;
-	std::cout << "FALSE " << 0 << std::endl;
-	std::cout << "\nCARD STATUS " << cards[r][c].is_open << std::endl;
 
 	if (SDL_PointInRect(&point, &cards[r][c].card_rect) && !cards[r][c].is_open)
 	{
-		std::cout << "TRUE" << std::endl;
 		SDL_SetRenderDrawColor(rend, 0, 0, 255, 255);
 		SDL_RenderFillRect(rend, &cards[r][c].card_rect);
 		SDL_RenderPresent(rend);
+		cards[r][c].is_open = true;
 		return true;
 	}
 	else
-	{
-		std::cout << "FALSE" << std::endl;
 		return false;
-
-	}
 	
 }
 
@@ -232,10 +217,10 @@ void Game::showResults(std::vector<Player> scores)
 	}
 	
 	Fl_Text_Display::Style_Table_Entry style[] = { FL_DARK_YELLOW, FL_COURIER, 19 };
-	Fl_Window* win = new Fl_Window(300, 200);
+	Fl_Window* win = new Fl_Window(350, 200);
 	Fl_Text_Buffer* text_buff = new Fl_Text_Buffer();
 	Fl_Text_Buffer* style_buff = new Fl_Text_Buffer();
-	Fl_Text_Display* disp = new Fl_Text_Display(40, 20, 200, 150, "PLAYERS RANKINGS");
+	Fl_Text_Display* disp = new Fl_Text_Display(40, 20, 300, 150, "PLAYERS RANKINGS");
 	
 	disp->buffer(text_buff);
 	disp->highlight_data(style_buff, style, 1, 'A', 0, 0);
@@ -245,6 +230,44 @@ void Game::showResults(std::vector<Player> scores)
 	win->resizable(*disp);
 	win->show();
 	Fl::run();
+}
+
+void Game::displayPlayers(Player p, int r, int g, int b)
+{
+	if (TTF_Init() == 0)
+	{
+		//Setup font
+		TTF_Font* font = TTF_OpenFont("arial.ttf", 20);
+		SDL_Color font_col = { 0, 255, 0 };
+
+		//Setup frame for a player that is currently playing
+		SDL_SetRenderDrawColor(rend, r, g, b, 1);
+		
+		//Get ordinal number of the player, player_id
+		//int p_id = stoi(p.getName().substr(6, p.getName().length()));
+
+		//Move the rect that represents the frame on x position by its width, 80 
+		SDL_Rect rect = { p.x_pos(), p.y_pos(), 80, 30 };
+		SDL_RenderFillRect(rend, &rect);
+
+		SDL_Surface* surface = TTF_RenderText_Solid(font, p.getName().c_str(), font_col);
+		SDL_Texture* message = SDL_CreateTextureFromSurface(rend, surface);
+		SDL_QueryTexture(message, NULL, NULL, &rect.w, &rect.h);
+		SDL_RenderCopy(rend, message, NULL, &rect);
+		SDL_RenderPresent(rend);
+	}
+}
+
+bool Game::playAgain()
+{
+	switch (fl_choice("What to play again?", "YES", "NO", 0)) 
+	{
+	case 0:
+		return true;
+	case 1:
+		return false;
+	}
+
 }
 
 int Game::findCardPos(int* a) 

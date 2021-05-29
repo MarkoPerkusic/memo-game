@@ -11,6 +11,7 @@
 #include<FL/Fl_Int_Input.H>
 #include<FL/Fl_Output.H>
 #include<FL/Fl_Text_Display.H>
+#include <FL/fl_ask.H>
 
 #include <vector>
 #include <iostream>
@@ -43,9 +44,10 @@ class Game
 		int available_points;
 		std::vector<int> card_values_deck;
 		int shuffleCardValues();
-		//void showResults(std::map<int, std::string> M);
+		void displayPlayers(Player p, int r, int g, int b);
 		std::vector<Player> scoreboard;
 		void showResults(std::vector<Player> scores);
+		bool playAgain();
 
 	private:
 		void setPlayers(int players);

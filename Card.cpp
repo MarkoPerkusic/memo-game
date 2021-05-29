@@ -12,8 +12,8 @@ Card::Card(int r, int c)
 	card_value = 0;
 	row = r;
 	col = c;
-	card_rect.x = 50 + r * 100;
-	card_rect.y = 50 + c * 100;
+	card_rect.x = 100 + r * 100;
+	card_rect.y = 70 + c * 100;
 	card_rect.w = 50;
 	card_rect.h = 80;
 }

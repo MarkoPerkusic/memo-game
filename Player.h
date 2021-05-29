@@ -16,6 +16,8 @@ class Player
 		std::vector<Card*> selected_cards;
 		int score;
 		void closeCards();
+		int x_pos();
+		int y_pos();
 
 	private:
 		std::string name;

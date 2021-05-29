@@ -18,6 +18,50 @@ std::string Player::getName()
 	return name;
 }
 
+int Player::x_pos()
+{
+	int p_id = stoi(name.substr(6, name.length()));
+
+	if (p_id <= 12)
+	{
+		return 20 + (p_id - 1) * 80;
+	}
+	else if (p_id > 12 && p_id <= 30)
+	{
+		return 900;
+	}
+	else if (p_id > 30 && p_id <= 41)
+	{
+		return 20 + (41 - p_id) * 80;
+	}
+	else
+	{
+		return 20;
+	}
+}
+
+int Player::y_pos()
+{
+	int p_id = stoi(name.substr(6, name.length()));
+
+	if (p_id <= 12)
+	{
+		return 20;
+	}
+	else if (p_id > 12 && p_id <= 30)
+	{
+		return 20 + (p_id - 12) * 30;
+	}
+	else if (p_id > 30 && p_id <= 41)
+	{
+		return 560;
+	}
+	else
+	{
+		return 20 + (59 - p_id) * 30;
+	}
+}
+
 void Player::selectCard(Card* selected)
 {
 	selected_cards.insert(selected_cards.begin(), selected);
